@@ -1,0 +1,123 @@
+---
+title: "Untitled"
+author: "mz"
+date: "22 November 2017"
+output: html_document
+---
+
+So this was November 2017, I needed to consolidate a pile of Vietnam related folders.. and try to integrate [[Makefile]] into my system. Starting point was based a python thing called [[cookiecutter| https://drivendata.github.io/cookiecutter-data-science/]] data science, and a bunch of other pipeline links below, I reorganized the whole thing.. 
+
+My current thinking is that while structure is important, the makefile is the main thing - making the order and dependencies clear..
+
+Here's my  attempt:
+
+## Qestions to figure out 
+
+I guess the main question is what is the basic unit. R scripts can be reused on different datasets (less likely) and for different reports. figures can result from R scripts or be directly produced in literate scripts (e.g. Rmd). 
+
+There are 'exercises' or experiments, some of which end up staying isolated, others might get merged into more overarching experiments or reports. A report can be based on several experiments.. 
+
+Is this tracked as one repo? or individual sub repos?
+
+One makefile? or more makefiles? where are they?
+
+Which sub-sections are self-standing? 
+
+And how do I keep track of/ visualise the dependencies (order). 
+
+IDE agnosticism? Can all the scripts be run with R CMD or Rscript (what's the difference?) [[here's the difference | https://stackoverflow.com/a/22358976/801398]]
+
+### Project level stuff
+
+* system info?
+* .Rproj file
+* README.md
+* .packrat project file - if bothered
+* .gitignore 
+
+
+## Folder structure 
+`+---code
+|   +---data-cleaning
+|   \---functions
++---data
+|   +---interim
+|   +---processed
+|   \---raw
++---data-sources
++---docs
++---figures
++---journals
+\---results
+    +---human-readable
+    \---rds`
+
+
+
+1- data is selfexplanatory
+
+* raw is the stuff you don't touch
+* processed is the final, complete, canonical, untouchable data
+*interim is for stuff in between the two - e.g. before merging or sth?
+
+2. data-sources are dictionaries, manuals, questionnaires etc. explaining data/raw stuff. 
+
+3. docs are reports, papers, presentations produced based on results, figs and scripts. 
+
+4. figures  these are mainly .eps, (but that's just me) so really any figs produced out of the scripts. 
+
+* ? should i differentiate between figures that are ready to go (with labels etc) and ones that have coded labels for psfrag?
+
+5. journals - a bit late, but there are a few. i guess they can be here, otherwise maybe just a single file at the top. .Rmd file seems reasonable? 
+
+6. resutls / outputs. hmm, so here i'm conflicted about format. I was taught  binary formats are bad, not human readable, everything should be a .csv file. but they have no structure, no lables etc. easier to have .rds objects you can pull in when you like?
+
+* so a .rds file that is the output of every R script
+* I can also have a human-readable-table files
+
+7. scripts: there are R scripts, but also e.g. netlogo, python? And how is this folder organized? By task, by project, by code type? Should I call it code instead of scripts? OK, code is better, because it is clearer to the common man
+
+* OK, so there are some things that can be shared between projects, namley data cleaning. So that can be one folder. 
+* and there could be funcitons that are used across projects/reports. 
+* the rest are experiment folders, probably chronologically named
+
+
+!!Visualising makefiles
+
+ A nice compelte example with curl, Rscript, and `makefile2graph` by S. Jackman is  [[here| https://github.com/sjackman/makefile-example]]
+
+Then there is `makefile2dot` form [[https://github.com/vak/makefile2dot]], quick and dirty, not sure if it works on windows, requires python and graphviz installed. 
+
+!! OK, so how does the migration happen?
+
+* Start with skeleton folder structure
+* New journal entry to make notes of everything that is happeneing step by step
+* initialise new repo
+* new Rproject as well, but only one overall.
+* build up make file as you go along. 
+
+
+
+!! Inspirations:
+
+[[here is another basic strucutre | http://blog.jom.link/implementation_basic_reproductible_workflow.html]] for R - this one aslo uses .rds, and has a folder called 'produced data', which is a combinaiton of my /data/processed and /results. hmm Also, he has a 'run all' file, which is a r-style makefile. This guy actually has a pretty good setup if you only do Rmd, a bit too simle for me here, but worth noting. 
+
+[[this is a very basic tidlyflow implementation|https://github.com/MaximeWack/tidyflow]] way to simple for me, but has an interesting idea: save *all theresults* as a hierarchical list object, and use .rds to save it and then retreive stuff from it.
+
+Same guy (Maxime) exlains [[here | https://www.reddit.com/r/rstats/comments/5t8s2h/in_rstudio_how_do_you_decide_which_code_goes_in/?st=ja40kzr0&sh=a2240f37]] how the objects work. you just pick e.g. results$tables$table1 from it. 
+
+a Plos article on how to do this in biology [[here| http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1000424]] - not brilliant i guess, but better. has experiments, and the first level structure is logical, second chronological. then again logical. core principle: someone unfamiliar with the project should be able to figure it out - EEEK!!
+
+Another [[make - R - LateX tutorial | http://zmjones.com/make/]] 
+
+
+!!Misc questions that came up -- answered
+
+* what about packart [[seems to work easy from rstudio|https://rstudio.github.io/packrat/rstudio.html]], but do i really need it? how does it work with dropbox and github?
+* need to be keeping a journal as well, I guess using Rmds is a good way
+* nested Rprojects ever a good idea? Probably not, also necause you want a 1:1 mapping with git repos, and github [[apparenlty| https://stackoverflow.com/questions/35043733/how-do-i-create-nested-repositories-in-github]]  does not allow nested repos anyway. 
+
+
+!!Misc questions that came up -- unanswered
+
+* what about roxygen

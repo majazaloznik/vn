@@ -1,0 +1,47 @@
+---
+title: "Journal--VN Project Migration and Consolidation"
+author: "mz"
+date: "22 November 2017"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+## 22.11.2017 
+
+1. Start journal.
+
+2. prepare empty Skeleton folder structure: `vn`
+(see Appendix 1. for background info on how it was designed)
+
+```
++---code
+|   +---data-cleaning
+|   \---functions
++---data
+|   +---interim
+|   +---processed
+|   \---raw
++---data-sources
++---docs
++---figures
++---journals
+\---results
+    +---human-readable
+    \---rds
+```
+
+3. Add appendix 1 as child .Rmd file, this is already a first dependency to add to the make file!! ToDo
+
+4. But first a new project and git repo.
+
+5. Write pretty comrehensive .gitignore file -- only code and journals are tracked. 
+
+6. Initial commit. 
+
+
+
+# Appendix 1 - Background on the Project Folder Organization Design (snapshot 22.11.2017) 
+
+```{r appendix-1, child = 'Project-folder-organization-background.Rmd'}
+```
