@@ -31,6 +31,7 @@ output:
     \---rds
 ```
 
+
 3. Add appendix 1 as child .Rmd file, this is already a first dependency to add to the make file!! ToDo
 
 4. But first a new project and git repo.
@@ -38,6 +39,15 @@ output:
 5. Write pretty comrehensive .gitignore file -- only code and journals are tracked. 
 
 6. Initial commit. 
+
+7. first dependency, try to write it up in my brand new makefile! 
+
+* OK this didn't go super smoothly. Getting `make: nothing to be done` error
+* Aha, the reason for that was i had spaces instead of tabs in the makefile. works now. 
+
+8. Am I doing both to pdf and html? does this work if the files don't exist yet? OK, make sure `all` is updated!! after each additon 
+
+9. Next task is figuring out whether i want render or knitr or ezknitr? And how to get rid of those annoyign folders that knitting to pdf seems to leave behind. Hmm, seems like this is a weird pandoc/Windows artefact.. With a lot of help from this nice writeup: [https://stackoverflow.com/a/40563480/801398]
 
 
 

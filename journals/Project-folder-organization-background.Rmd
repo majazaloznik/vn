@@ -37,7 +37,9 @@ IDE agnosticism? Can all the scripts be run with R CMD or Rscript (what's the di
 
 
 ## Folder structure 
-`+---code
+
+```
++---code
 |   +---data-cleaning
 |   \---functions
 +---data
@@ -50,8 +52,8 @@ IDE agnosticism? Can all the scripts be run with R CMD or Rscript (what's the di
 +---journals
 \---results
     +---human-readable
-    \---rds`
-
+    \---rds
+```    
 
 
 1- data is selfexplanatory
@@ -82,13 +84,13 @@ IDE agnosticism? Can all the scripts be run with R CMD or Rscript (what's the di
 * the rest are experiment folders, probably chronologically named
 
 
-!!Visualising makefiles
+## Visualising makefiles
 
  A nice compelte example with curl, Rscript, and `makefile2graph` by S. Jackman is  [[here| https://github.com/sjackman/makefile-example]]
 
 Then there is `makefile2dot` form [[https://github.com/vak/makefile2dot]], quick and dirty, not sure if it works on windows, requires python and graphviz installed. 
 
-!! OK, so how does the migration happen?
+## OK, so how does the migration happen?
 
 * Start with skeleton folder structure
 * New journal entry to make notes of everything that is happeneing step by step
@@ -98,7 +100,7 @@ Then there is `makefile2dot` form [[https://github.com/vak/makefile2dot]], quick
 
 
 
-!! Inspirations:
+## Inspirations:
 
 [[here is another basic strucutre | http://blog.jom.link/implementation_basic_reproductible_workflow.html]] for R - this one aslo uses .rds, and has a folder called 'produced data', which is a combinaiton of my /data/processed and /results. hmm Also, he has a 'run all' file, which is a r-style makefile. This guy actually has a pretty good setup if you only do Rmd, a bit too simle for me here, but worth noting. 
 
@@ -111,13 +113,13 @@ a Plos article on how to do this in biology [[here| http://journals.plos.org/plo
 Another [[make - R - LateX tutorial | http://zmjones.com/make/]] 
 
 
-!!Misc questions that came up -- answered
+##Misc questions that came up -- answered
 
 * what about packart [[seems to work easy from rstudio|https://rstudio.github.io/packrat/rstudio.html]], but do i really need it? how does it work with dropbox and github?
 * need to be keeping a journal as well, I guess using Rmds is a good way
 * nested Rprojects ever a good idea? Probably not, also necause you want a 1:1 mapping with git repos, and github [[apparenlty| https://stackoverflow.com/questions/35043733/how-do-i-create-nested-repositories-in-github]]  does not allow nested repos anyway. 
 
 
-!!Misc questions that came up -- unanswered
+##Misc questions that came up -- unanswered
 
 * what about roxygen
