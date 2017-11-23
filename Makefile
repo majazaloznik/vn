@@ -1,15 +1,36 @@
 
-# VARIABLE DEFINITIONS
-# root directory
+
+# VARIABLE DEFINITIONS  #######################################################
+###############################################################################
+# folders #####################################################################
 DIR = .
+DOCS = $(DIR)/docs
+JOURNALS = $(DIR)/journals
+
+# file lists ##################################################################
+# migration journals
+# J-MIG = $(DOCS)/j-migration.html $(DOCS)/j-migration.pdf
+# migraiton sources
+# J-MIG-SRC = $(JOURNALS)/j-migration.Rmd $(JOURNALS)/j-appendix1.Rmd
+
+# commands ####################################################################
+# recipe to knit pdf from first prerequisite
+KNIT-PDF = Rscript -e "require(rmarkdown); render('$<', output_dir = '$(DOCS)', output_format = 'pdf_document' )"
+
+# recipe to knit pdf from first prerequisite
+KNIT-HTML = Rscript -e "require(rmarkdown); render('$<', output_dir = '$(DOCS)', output_format = 'html_document' )"
 
 
-# journal (and its appendix) render to  pdf
-$(DIR)/docs/Journal-migration-and-consolidation.pdf: $(DIR)/journals/Journal-migration-and-consolidation.Rmd $(DIR)/journals/Project-folder-organization-background.Rmd
-	Rscript -e "require(rmarkdown); render('$<', output_dir = '$(DIR)/docs/', output_format = 'pdf_document' )"
+# DEPENDENCIES   ##############################################################
+###############################################################################
+all: $(DOCS)/j-migration.html $(DOCS)/j-migration.pdf
 
 # journal (and its appendix) render to  html
-$(DIR)/docs/Journal-migration-and-consolidation.html: $(DIR)/journals/Journal-migration-and-consolidation.Rmd $(DIR)/journals/Project-folder-organization-background.Rmd
-	Rscript -e "require(rmarkdown); render('$<', output_dir = '$(DIR)/docs/', output_format = 'html_document' )"
+$(DOCS)/j-migration.html: $(JOURNALS)/j-migration.Rmd $(JOURNALS)/j-appendix1.Rmd
+	$(KNIT-HTML)
 
-all: $(DIR)/docs/Journal-migration-and-consolidation.pdf $(DIR)/docs/Journal-migration-and-consolidation.html
+# journal (and its appendix) render to  pdf
+$(DOCS)/j-migration.pdf:  $(JOURNALS)/j-migration.Rmd $(JOURNALS)/j-appendix1.Rmd
+	$(KNIT-PDF)
+
+

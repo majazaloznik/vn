@@ -1,0 +1,96 @@
+---
+title: "Journal--VN Project Migration and Consolidation"
+author: "mz"
+date: "22 November 2017"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+## 22.11.2017 
+
+1. Start journal.
+
+2. prepare empty Skeleton folder structure: `vn`
+(see Appendix 1. for background info on how it was designed)
+
+```
++---code
+|   +---data-cleaning
+|   \---functions
++---data
+|   +---interim
+|   +---processed
+|   \---raw
++---data-sources
++---docs
++---figures
++---journals
+\---results
+    +---human-readable
+    \---rds
+```
+
+
+3. Add appendix 1 as child .Rmd file, this is already a first dependency to add to the make file!! ToDo
+
+4. But first a new project and git repo.
+
+5. Write pretty comrehensive .gitignore file -- only code and journals are tracked. 
+
+6. Initial commit. 
+
+7. first dependency, try to write it up in my brand new makefile! 
+
+* OK this didn't go super smoothly. Getting `make: nothing to be done` error
+* Aha, the reason for that was i had spaces instead of tabs in the makefile. works now. 
+
+8. Am I doing both to pdf and html and docx? does this work if the files don't exist yet? OK, make sure `all` is updated whenever you add new targets, duh!
+
+9. Makefile gets split into 
+
+* variable definitions
++ folders
++ file lists
++ commands
+* recipes
+
+10. OK, let's try visualising this now with makefile2grapy. 
+
+## 23.11.2017 
+
+1. So makefile2graph didn't work. just produced an empty graph, not sure why, might try on linux, but no worry.
+
+2. Tried the `makefile2dot.py` fiel I got from [here](https://github.com/vak/makefile2dot). This works on my windows machine, which has Python after:
+
+* I added `C:\\Python27` to the `PATH`
+* put the `makefile2dot.py` in the top folder
+* opened cmd.exe as admin
+* ran `python makefile2dot.py <Makefile >out.dot` from the same folder. Note the `.py` added, as it didn't work before.
+
+This produces a `.dot` file. 
+
+BUT. 
+
+* It doesn't expand the variables. So basically this means leaving all the file names explicit instead of using variables for lists of 
+* I just used agread and plot in Rgraphviz, which works, nbut not sure how to add the arrows. 
+* Also the .dot file has all the `$(FOLDER)/` strings in front of file names, which makes it perhaps a bit unwieldy. Need to see how to stript hem off
+
+3. OK, so I'll try installing Graphviz on the machine, so I can use `dot` as the command directly. Alhtough it would be cool to have the R version as well. Hmm, need to make this work on both linux and ubuntu..
+
+4. this is all i've got with oackage `rgraphviz`
+make <- agread(file = "out.dot")
+make2 <- agopen(make)
+make@edgemode <- "directed"
+
+plot(make)
+edgeData(make)
+
+. Next task is figuring out whether i want render or knitr or ezknitr? And how to get rid of those annoyign folders that knitting to pdf seems to leave behind. Hmm, seems like this is a weird pandoc/Windows artefact.. With a lot of help from this nice writeup: [https://stackoverflow.com/a/40563480/801398]
+
+
+
+# Appendix 1 - Background on the Project Folder Organization Design (snapshot 22.11.2017) 
+
+```{r appendix-1, child = 'j-appendix1.Rmd'}
+```

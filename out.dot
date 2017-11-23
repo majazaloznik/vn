@@ -1,0 +1,12 @@
+digraph G {
+	rankdir="BT"
+	"all"
+	"$(DOCS)/j-migration.html" -> "all"
+	"$(DOCS)/j-migration.pdf" -> "all"
+	"$(DOCS)/j-migration.html"
+	"$(JOURNALS)/j-migration.Rmd" -> "$(DOCS)/j-migration.html"
+	"$(JOURNALS)/j-appendix1.Rmd" -> "$(DOCS)/j-migration.html"
+	"$(DOCS)/j-migration.pdf"
+	"$(JOURNALS)/j-migration.Rmd" -> "$(DOCS)/j-migration.pdf"
+	"$(JOURNALS)/j-appendix1.Rmd" -> "$(DOCS)/j-migration.pdf"
+}
