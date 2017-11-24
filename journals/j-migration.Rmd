@@ -7,7 +7,7 @@ output:
   html_document: default
 ---
 
-## 22.11.2017 
+## Wednesday 22.11.2017 
 
 1. Start journal.
 
@@ -57,7 +57,7 @@ output:
 
 10. OK, let's try visualising this now with makefile2grapy. 
 
-## 23.11.2017 
+## Thursday 23.11.2017 
 
 1. So makefile2graph didn't work. just produced an empty graph, not sure why, might try on linux, but no worry.
 
@@ -78,7 +78,7 @@ BUT.
 
 3. OK, so I'll try installing Graphviz on the machine, so I can use `dot` as the command directly. Alhtough it would be cool to have the R version as well. Hmm, need to make this work on both linux and ubuntu..
 
-4. this is all i've got with oackage `rgraphviz`
+4. this is all i've got with package `Rgraphviz`
 make <- agread(file = "out.dot")
 make2 <- agopen(make)
 make@edgemode <- "directed"
@@ -87,6 +87,46 @@ plot(make)
 edgeData(make)
 
 . Next task is figuring out whether i want render or knitr or ezknitr? And how to get rid of those annoyign folders that knitting to pdf seems to leave behind. Hmm, seems like this is a weird pandoc/Windows artefact.. With a lot of help from this nice writeup: [https://stackoverflow.com/a/40563480/801398]
+
+## Friday 24.11.2017
+
+1. New attempt at visualisation based on this [https://heidiseibold.github.io/r/2015/09/16/Visualizing-Makefiles/]. But doesn't look too reliable long term, so I give up.
+
+2. Back to the previous solution and try to get the dot fiel to work , this time usign `DiagrammeR` [http://rich-iannone.github.io/DiagrammeR/graphviz_and_mermaid.html]. OK, DiagrammeR looks shish af, but the problem is the .dot file I've got is not smooth enough. Like e.g. it would need to have special node statements and edge statements. That way node names are defined as labels, because otherwise node names cannot have special characters in them (., $, -, etc). 
+
+3. Actually no, it's OK, DiagrammeR works directly using `grViz("out.dot")`!!
+
+4. So let's add this to the make file then!!
+
+5. OK, so the problem now becomes that the output of grViz is not sth that can be easily saved to a image file. aparently anyway. See it isn't renderred as a plot, it's renderred in the Viewer pane in  Rstudio. So the standard save plot things don't work here.
+
+6. Now I want to run this visualisation of the makefile diagram externally, not inside the jounral:
+
+* so that it is modular, and I can use the diagram elsewhere
+* so that the journal can be renderred in .html, .pdf, .doc -- as it seems the grViz ouput only plays nice with .html. Aha, the output is actually an `htmlwidget`, that is helpful to know. Here are instructions for saving [leaflet ](https://stackoverflow.com/questions/31336898/how-to-save-leaflet-in-r-map-as-png-or-jpg-file), but that's for maps. 
+
+7. OK, getting closer. Now the V8 package, which used to work for export to SVG is no longer maintained or some such thing, so instead there is DiagrammeRsvg. Now I need to figure out what to do with the svg. 
+
+8. Right, svg is an odd thing. Looks like this might help `convertGraph`. For it to work you need phantom.js from here: http://phantomjs.org/download.html. Hmm, this will be a problem for switching between platforms
+
+9. SO far Ive got this 
+
+```
+require(DiagrammeR)
+require(DiagrammeRsvg)
+require(convertGraph)
+svg <- export_svg(grViz("make.dot"))
+install.phantom("C:/Program Files/phantomjs-2.1.1-windows/bin")
+convertGraph("make.svg", "example.png", path = "C:/Program Files/phantomjs-2.1.1-windows/bin")
+
+```
+and gives me 
+
+```
+Warning message:
+running command ''C:/Program Files/phantomjs-2.1.1-windows/bin' C:/R_Libs/convertGraph/lib/command.js make.svg example.png' had status 127
+```
+
 
 
 

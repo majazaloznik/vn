@@ -1,8 +1,11 @@
 digraph G {
 	rankdir="BT"
 	"all"
+	"$(DIR)/make.dot" -> "all"
 	"$(DOCS)/j-migration.html" -> "all"
 	"$(DOCS)/j-migration.pdf" -> "all"
+	"$(DIR)/make.dot"
+	"$(DIR)/Makefile" -> "$(DIR)/make.dot"
 	"$(DOCS)/j-migration.html"
 	"$(JOURNALS)/j-migration.Rmd" -> "$(DOCS)/j-migration.html"
 	"$(JOURNALS)/j-appendix1.Rmd" -> "$(DOCS)/j-migration.html"

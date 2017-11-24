@@ -23,7 +23,15 @@ KNIT-HTML = Rscript -e "require(rmarkdown); render('$<', output_dir = '$(DOCS)',
 
 # DEPENDENCIES   ##############################################################
 ###############################################################################
-all: $(DOCS)/j-migration.html $(DOCS)/j-migration.pdf
+all: $(DIR)/make.dot $(DOCS)/j-migration.html $(DOCS)/j-migration.pdf
+
+# top level dependencies ######################################################
+# make file .dot
+$(DIR)/make.dot : $(DIR)/Makefile
+	python makefile2dot.py < $< > make.dot
+
+# make chart from .dot
+#$(DIR)/make.dot
 
 # journal (and its appendix) render to  html
 $(DOCS)/j-migration.html: $(JOURNALS)/j-migration.Rmd $(JOURNALS)/j-appendix1.Rmd
