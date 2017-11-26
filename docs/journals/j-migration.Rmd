@@ -3,10 +3,9 @@ title: "Journal--VN Project Migration and Consolidation"
 author: "mz"
 date: "22 November 2017"
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
 ---
-
 ## Wednesday 22.11.2017 
 
 1. Start journal.
@@ -14,23 +13,9 @@ output:
 2. prepare empty Skeleton folder structure: `vn`
 (see Appendix 1. for background info on how it was designed)
 
-```
-+---code
-|   +---data-cleaning
-|   \---functions
-+---data
-|   +---interim
-|   +---processed
-|   \---raw
-+---data-sources
-+---docs
-+---figures
-+---journals
-\---results
-    +---human-readable
-    \---rds
-```
+```{r tree}
 
+```
 
 3. Add appendix 1 as child .Rmd file, this is already a first dependency to add to the make file!! ToDo
 
@@ -92,7 +77,7 @@ edgeData(make)
 
 1. New attempt at visualisation based on this [https://heidiseibold.github.io/r/2015/09/16/Visualizing-Makefiles/]. But doesn't look too reliable long term, so I give up.
 
-2. Back to the previous solution and try to get the dot fiel to work , this time usign `DiagrammeR` [http://rich-iannone.github.io/DiagrammeR/graphviz_and_mermaid.html]. OK, DiagrammeR looks shish af, but the problem is the .dot file I've got is not smooth enough. Like e.g. it would need to have special node statements and edge statements. That way node names are defined as labels, because otherwise node names cannot have special characters in them (., $, -, etc). 
+2. Back to the previous solution and try to get the dot file to work , this time using `DiagrammeR` [http://rich-iannone.github.io/DiagrammeR/graphviz_and_mermaid.html]. OK, DiagrammeR looks swish af, but the problem is the .dot file I've got is not smooth enough. Like e.g. it would need to have special node statements and edge statements. That way node names are defined as labels, because otherwise node names cannot have special characters in them (., $, -, etc). 
 
 3. Actually no, it's OK, DiagrammeR works directly using `grViz("out.dot")`!!
 
@@ -127,6 +112,40 @@ Warning message:
 running command ''C:/Program Files/phantomjs-2.1.1-windows/bin' C:/R_Libs/convertGraph/lib/command.js make.svg example.png' had status 127
 ```
 
+## Sunday 26.11.2017
+
+1. OK, how about another way of converting svg, `rsvg` looks like it could be a [thing ](https://www.opencpu.org/posts/svg-release/), I'll try that instead. Yes, and it works!
+
+2. Now have to add this to the makefile, and to do that, I need to understand how to reference the target and dependenices properly. Also, how long are scripts in Rscript before I write them to file? How many require packages e.g. would I still cram into a `Rscript` line?
+
+3. Here it is: 
+
+```{r echo=FALSE, out.width='100%'}
+knitr::include_graphics(here::here("/figures/make.png"))
+```
+
+`![](figures/make.png)`
+
+4. OK, this works, but I do now have the problem of relative paths between this .Rmd file and fiures.. so need to fix that with a chunk option or ezknitr. OK, so one thing I'm not too clear on is the fact that `knitr::knit` only renders to html apparently, and not to pdf, that is done by `rmarkdown::render`. But people think the pdf and doc compiles are knitting because the rstudio button is the same. But so looks like ezknitr won't work with pdf, also doens't parse YAML headers, at least according to the [open issues](https://github.com/ropensci/ezknitr/issues/). 
+
+5. Apparenlty `here` is a simple way of sloving all my problems according to [here](https://github.com/jennybc/here_here#readme  ). ALthough there seems [based on Yihui's attitude](https://github.com/yihui/knitr/issues/1411) to be very little chance of a satisfacotry solution. But I think it works as `knitr::include_graphcs(here::here())`. So this is sorted then. 
+
+6. Cool, relative paths in chunks from the project folder can be done using `here::here()` although i'm not clear on what Yihui's problem is, but it seems to be a robust solution. 
+
+7. OK, now I need to move the journals folder from the top level, that was silly anyway, and now i can also test how portable the setup is atm. 
+
+8. Also, note that the make file and being able to visualise it means i don't need a super-structured directory structure..
+
+9. Let's see if I can't move the makefile2dot.py out of the project folder as well. Cool that works. 
+
+10. Clean up the dir structure a bit. ALso figure out how to refer to target (`$@`) and to target dir (`$(@D)`). Neat.
+
+11. How to add the tree structure of the folder to e.g. this file. One option is thrhough the makefile. Another is through some sort of R-system command?
+
+12. OK, this is not working, system trhoes me a 127 error, shell kind of works, but not with ASCi characters, and even if I get it to work, this is Windows, atm, so god knows what will happen on linux. I'll try direct from the makefile creating a .txt file, and reading it in. ?! OK, no idea how to do that ;)
+
+
+*. For the record: my argument for keeping a non-streamlined makefile is based on [this article on why you should never rewrite code that works](https://www.joelonsoftware.com/2000/04/06/things-you-should-never-do-part-i/) 
 
 
 

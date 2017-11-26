@@ -1,44 +1,46 @@
-
-
 # VARIABLE DEFINITIONS  #######################################################
 ###############################################################################
 # folders #####################################################################
 DIR = .
 DOCS = $(DIR)/docs
-JOURNALS = $(DIR)/journals
+J = $(DOCS)/journals
+FIGS = $(DIR)/figures
+DATA = $(DIR)/data
+PROOCESSED= $(DATA)/processed
 
 # file lists ##################################################################
 # migration journals
-# J-MIG = $(DOCS)/j-migration.html $(DOCS)/j-migration.pdf
+# J-MIG = $(J)/j-migration.html $(J)/j-migration.pdf
 # migraiton sources
-# J-MIG-SRC = $(JOURNALS)/j-migration.Rmd $(JOURNALS)/j-appendix1.Rmd
+# J-MIG-SRC = $(J)/j-migration.Rmd $(J)/j-appendix1.Rmd
 
 # commands ####################################################################
 # recipe to knit pdf from first prerequisite
-KNIT-PDF = Rscript -e "require(rmarkdown); render('$<', output_dir = '$(DOCS)', output_format = 'pdf_document' )"
+KNIT-PDF = Rscript -e "require(rmarkdown); render('$<', output_dir = '$(@D)', output_format = 'pdf_document' )"
 
 # recipe to knit pdf from first prerequisite
-KNIT-HTML = Rscript -e "require(rmarkdown); render('$<', output_dir = '$(DOCS)', output_format = 'html_document' )"
+KNIT-HTML = Rscript -e "require(rmarkdown); render('$<', output_dir = '$(@D)', output_format = 'html_document' )"
 
 
 # DEPENDENCIES   ##############################################################
 ###############################################################################
-all: $(DIR)/make.dot $(DOCS)/j-migration.html $(DOCS)/j-migration.pdf
+all:   $(J)/j-migration.pdf $(J)/j-migration.html 
 
 # top level dependencies ######################################################
 # make file .dot
 $(DIR)/make.dot : $(DIR)/Makefile
-	python makefile2dot.py < $< > make.dot
+	python $(DIR)/code/functions/makefile2dot.py < $< > make.dot
 
 # make chart from .dot
-#$(DIR)/make.dot
+$(FIGS)/make.png : $(DIR)/make.dot
+	Rscript -e "require(DiagrammeR); require(DiagrammeRsvg); require(rsvg); png::writePNG(rsvg(charToRaw(export_svg(grViz('$<')))), '$(FIGS)/make.png')"
 
 # journal (and its appendix) render to  html
-$(DOCS)/j-migration.html: $(JOURNALS)/j-migration.Rmd $(JOURNALS)/j-appendix1.Rmd
+$(J)/j-migration.html: $(J)/j-migration.Rmd $(J)/j-appendix1.Rmd $(FIGS)/make.png
 	$(KNIT-HTML)
 
 # journal (and its appendix) render to  pdf
-$(DOCS)/j-migration.pdf:  $(JOURNALS)/j-migration.Rmd $(JOURNALS)/j-appendix1.Rmd
+$(J)/j-migration.pdf:  $(J)/j-migration.Rmd $(J)/j-appendix1.Rmd $(FIGS)/make.png
 	$(KNIT-PDF)
 
-
+# make txt file of directory tree. 

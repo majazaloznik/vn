@@ -56,31 +56,32 @@ IDE agnosticism? Can all the scripts be run with R CMD or Rscript (what's the di
 ```    
 
 
-1- data is selfexplanatory
+1- `data` is selfexplanatory
 
 * raw is the stuff you don't touch
 * processed is the final, complete, canonical, untouchable data
 *interim is for stuff in between the two - e.g. before merging or sth?
 
-2. data-sources are dictionaries, manuals, questionnaires etc. explaining data/raw stuff. 
+2. `dictionaries` are dictionaries, manuals, questionnaires etc. explaining data/raw stuff. Ad.2: maybe I'll move it into `data`
 
-3. docs are reports, papers, presentations produced based on results, figs and scripts. 
+3. `docs` are reports, papers, presentations produced based on results, figs and scripts. But is this where the `.Rmds` live as well, and the `.tex` files?
 
 4. figures  these are mainly .eps, (but that's just me) so really any figs produced out of the scripts. 
 
 * ? should i differentiate between figures that are ready to go (with labels etc) and ones that have coded labels for psfrag?
 
-5. journals - a bit late, but there are a few. i guess they can be here, otherwise maybe just a single file at the top. .Rmd file seems reasonable? 
+5. `journals` - a bit late, but there are a few. i guess they can be here, otherwise maybe just a single file at the top. .Rmd file seems reasonable? OK, but it doens't deserve it's own folder, it'll go into `docs`. 
 
-6. resutls / outputs. hmm, so here i'm conflicted about format. I was taught  binary formats are bad, not human readable, everything should be a .csv file. but they have no structure, no lables etc. easier to have .rds objects you can pull in when you like?
+6. `resutls` / outputs. hmm, so here i'm conflicted about format. I was taught  binary formats are bad, not human readable, everything should be a .csv file. but they have no structure, no lables etc. easier to have .rds objects you can pull in when you like?
 
 * so a .rds file that is the output of every R script
 * I can also have a human-readable-table files
 
-7. scripts: there are R scripts, but also e.g. netlogo, python? And how is this folder organized? By task, by project, by code type? Should I call it code instead of scripts? OK, code is better, because it is clearer to the common man
+7. `scripts`: there are R scripts, but also e.g. netlogo, python? And how is this folder organized? By task, by project, by code type? Should I call it `code` instead of scripts? OK, code is better, because it is clearer to the common man
 
 * OK, so there are some things that can be shared between projects, namley data cleaning. So that can be one folder. 
-* and there could be funcitons that are used across projects/reports. 
+* and there could be `functions` that are used across projects/reports. 
+* the `functions` folder is e.g. where the `make2dot.py` file lives.
 * the rest are experiment folders, probably chronologically named
 
 
