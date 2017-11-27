@@ -167,9 +167,29 @@ knitr::include_graphics(here::here("/figures/make.png"))
 
 2. `rm -rf` -f option is force (no error) and -r is recursive. Although I don't know how to search for the folders recursively, but they should all be two down from docs, so `./docs/*/tex2pdf*` should list them all.  
 
-3. ad 12. from yesterday, i'll just do it manually i guess. 
+3. ad 12. from yesterday, i'll just do it manually i guess.
+
+4. OK, so template folder has also been set up and saved. Only issue there is that it only works if `here::here()` can figure out the project folder. Aah, but usitn `rprojroot` instead and specifying that the `makefile` needs to be in the root folder, that works. 
+
+5. Before I call this finished, let me just move the make.dot file into processed data. 
+
+6. OK, so clean template copy has been made. Now focus on VN. 
+
+7. Appendix 2 is the directory tree from which I am migrating. 
+
+8. OK, so now migration starts, how do I keep track of it though?!
+
+9. First the mapping stuff. SO, looking at the `VietnamABM\Scripts\S01-maps.R` situation it looks like I had downloaded some shape file from an unknown locaiton, and then saved as .RData. But this needs to be tracable, so doing it again and proper. 
+
+10. Now need to figure out how to deal with this. GADM seems to be a good source, even has a package `GADMTOols`, but I run into some library folder issues. Maybe I just download the file, but is that done in the makefile? or what. 
 
 # Appendix 1 - Background on the Project Folder Organization Design (snapshot 22.11.2017) 
 
 ```{r appendix-1, child = 'j-appendix1.Rmd'}
+```
+
+# Appendix 2 - Original Project Folder - Source Tree (snapshot 27.11.2017) 
+
+```{r}
+readLines(here::here("data/processed/project-wide/tree.txt"))
 ```

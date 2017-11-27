@@ -1,0 +1,106 @@
+Folder PATH listing for volume OS
+Volume serial number is 6C04-187D
+C:.
++---literature-todo
++---VietnamABM
+|   +---Data
+|   |   +---MapData
+|   |   +---VARHS2012
+|   |   \---VHLSShousehold data
+|   |       +---2006
+|   |       \---2008
+|   +---Presentation
+|   |   \---figure
+|   \---Scripts
+|       +---figure
+|       +---IPUMS
+|       +---NetLogo
+|       +---old
+|       +---Results
+|       +---RNetLogo
+|       \---Shiny
+|           \---VHLSS
+|               +---data
+|               +---rsconnect
+|               |   \---shinyapps.io
+|               |       \---maja
+|               +---scripts
+|               \---www
++---VietnamFieldwork
+|   +---Data
+|   |   +---FGD-photos
+|   |   |   +---18
+|   |   |   +---19
+|   |   |   +---20
+|   |   |   +---21
+|   |   |   \---22
+|   |   +---FocusGroupParticipants
+|   |   +---IDI
+|   |   \---Maps
+|   +---FGD-BBN
+|   |   +---Chart-Hoai-Duc
+|   |   +---Chart-Thanh-Hoa
+|   |   \---Data
+|   +---FGD-QDA
+|   |   \---scripts
+|   +---figures
+|   +---InField
+|   |   +---admin
+|   |   |   +---consent forms
+|   |   |   +---Hoai Duc
+|   |   |   \---old
+|   |   +---facilitators guides
+|   |   \---protocol presentations
+|   |       \---figure
+|   \---Scripts
++---VietnamReports
+|   +---2014-03-for Ken ABM
+|   +---2014-04-AprilPresentation
+|   +---2014-08-August14Schedule
+|   +---2014-09-ABM position paper
+|   |   \---Graphs
+|   +---2014-10-October14Presentation
+|   +---2014-11-Chinese delegation
+|   +---2014-11-November14Presentation
+|   +---2015-02-ABM technical documentation
+|   +---2015-02-Astana presentation
+|   |   \---figure
+|   +---2015-02-concept note
+|   +---2015-03-concept note
+|   +---2015-04-CharlesGodfrey Presentation
+|   +---2015-04-concept note
+|   +---2015-04-FoF Overview
+|   |   \---figure
+|   +---2015-Poster-unfinished
+|   |   \---figure
+|   +---2016 - reports
+|   |   \---figures
+|   \---2016-05-Supporting documentation
+|       \---figure
+\---VietnamSurvey
+    +---data
+    |   +---data-raw
+    |   |   +---DATA
+    |   |   |   +---Excel
+    |   |   |   \---Stata
+    |   |   +---REPORT
+    |   |   \---TOOLS
+    |   \---outputs
+    +---misc
+    +---old
+    |   +---data-old
+    |   |   \---RawData
+    |   +---reports-old
+    |   +---scripts-old
+    |   \---WorkingPapers-old
+    |       +---questionnaires
+    |       \---VnSurveyBackground
+    |           +---data
+    |           +---figures
+    |           +---presentations
+    |           |   \---reports
+    |           \---scripts
+    +---reports
+    \---scripts
+        \---r03-first-cut-hh-members_files
+            \---figure-html
