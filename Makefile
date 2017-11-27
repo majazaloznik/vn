@@ -14,6 +14,7 @@ PROOCESSED= $(DATA)/processed
 # migraiton sources
 # J-MIG-SRC = $(J)/j-migration.Rmd $(J)/j-appendix1.Rmd
 
+
 # commands ####################################################################
 # recipe to knit pdf from first prerequisite
 KNIT-PDF = Rscript -e "require(rmarkdown); render('$<', output_dir = '$(@D)', output_format = 'pdf_document' )"
@@ -25,7 +26,9 @@ KNIT-HTML = Rscript -e "require(rmarkdown); render('$<', output_dir = '$(@D)', o
 # DEPENDENCIES   ##############################################################
 ###############################################################################
 all:   $(J)/j-migration.pdf $(J)/j-migration.html 
+		-rm $(wildcard ./docs/*/tex2pdf*) -fr
 
+  
 # top level dependencies ######################################################
 # make file .dot
 $(DIR)/make.dot : $(DIR)/Makefile

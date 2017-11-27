@@ -36,25 +36,24 @@ IDE agnosticism? Can all the scripts be run with R CMD or Rscript (what's the di
 * .gitignore 
 
 
-## Folder structure 
+## Folder structure (updated)
 
 ```
 +---code
 |   +---data-cleaning
 |   \---functions
 +---data
+|   +---dictionaries
 |   +---interim
 |   +---processed
 |   \---raw
-+---data-sources
 +---docs
+|   \---journals
 +---figures
-+---journals
 \---results
     +---human-readable
     \---rds
-```    
-
+```
 
 1- `data` is selfexplanatory
 

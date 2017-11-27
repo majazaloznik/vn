@@ -13,8 +13,21 @@ output:
 2. prepare empty Skeleton folder structure: `vn`
 (see Appendix 1. for background info on how it was designed)
 
-```{r tree}
-
+```
++---code
+|   +---data-cleaning
+|   \---functions
++---data
+|   +---dictionaries
+|   +---interim
+|   +---processed
+|   \---raw
++---docs
+|   \---journals
++---figures
+\---results
+    +---human-readable
+    \---rds
 ```
 
 3. Add appendix 1 as child .Rmd file, this is already a first dependency to add to the make file!! ToDo
@@ -142,12 +155,19 @@ knitr::include_graphics(here::here("/figures/make.png"))
 
 11. How to add the tree structure of the folder to e.g. this file. One option is thrhough the makefile. Another is through some sort of R-system command?
 
-12. OK, this is not working, system trhoes me a 127 error, shell kind of works, but not with ASCi characters, and even if I get it to work, this is Windows, atm, so god knows what will happen on linux. I'll try direct from the makefile creating a .txt file, and reading it in. ?! OK, no idea how to do that ;)
+12. OK, this is not working, system throws me a 127 error, shell kind of works, but not with ASCi characters, and even if I get it to work, this is Windows, atm, so god knows what will happen on linux. I'll try direct from the makefile creating a .txt file, and reading it in. ?! OK, no idea how to do that. I mean it works using tree, but as soon as i add the -a option it stops. 
 
 
 *. For the record: my argument for keeping a non-streamlined makefile is based on [this article on why you should never rewrite code that works](https://www.joelonsoftware.com/2000/04/06/things-you-should-never-do-part-i/) 
 
 
+## Monday 27.11.2017
+
+1. clear out those pesky pdf folders that show up when Rmd files get compiled to pdf sometimes.  
+
+2. `rm -rf` -f option is force (no error) and -r is recursive. Although I don't know how to search for the folders recursively, but they should all be two down from docs, so `./docs/*/tex2pdf*` should list them all.  
+
+3. ad 12. from yesterday, i'll just do it manually i guess. 
 
 # Appendix 1 - Background on the Project Folder Organization Design (snapshot 22.11.2017) 
 
