@@ -7,6 +7,8 @@ J = $(DOCS)/journals
 FIGS = $(DIR)/figures
 DATA = $(DIR)/data
 P-PW = $(DATA)/processed/project-wide
+CODE = $(DIR)/code
+C-DC = $(CODE)/data-cleaning
 
 # file lists ##################################################################
 # migration journals
@@ -32,7 +34,7 @@ all:   $(J)/j-migration.pdf $(J)/j-migration.html
 # top level dependencies ######################################################
 # make file .dot
 $(P-PW)/make.dot : $(DIR)/Makefile
-	python $(DIR)/code/functions/makefile2dot.py < $< > $@
+	python $(DIR)/code/project-wide/makefile2dot.py < $< > $@
 
 # make chart from .dot
 $(FIGS)/make.png : $(P-PW)/make.dot
@@ -46,6 +48,7 @@ $(J)/j-migration.html: $(J)/j-migration.Rmd $(J)/j-appendix1.Rmd $(FIGS)/make.pn
 $(J)/j-migration.pdf:  $(J)/j-migration.Rmd $(J)/j-appendix1.Rmd $(FIGS)/make.png
 	$(KNIT-PDF)
 
-maps : 
-GWF-Autocratic-Regimes-1.2.zip:
-	curl -o GWF-Autocratic-Regimes-1.2.zip "http://sites.psu.edu/dictators/wp-content/uploads/sites/12570/2014/07/GWF-Autocratic-Regimes-1.2.zip"
+maps : VNM_adm1.rds
+
+VNM_adm1.rds:
+	Rscript -e "download.file('http://biogeo.ucdavis.edu/data/gadm2.8/rds/VNM_adm1.rds', 'data/raw/maps/VNM_adm1.rds', mode = 'wb')"

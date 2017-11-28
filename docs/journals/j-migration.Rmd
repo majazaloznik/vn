@@ -183,6 +183,26 @@ knitr::include_graphics(here::here("/figures/make.png"))
 
 10. Now need to figure out how to deal with this. GADM seems to be a good source, even has a package `GADMTOols`, but I run into some library folder issues. Maybe I just download the file, but is that done in the makefile? or what. 
 
+## Tuesday 28.11.2017
+
+1. Hmm, does the `makefile2dot.py` know how to tell unpack e.g. `%` variables? No, it doens't work, I'll have to write them all out explicitly. I'll call that  feature not a bug :)
+
+2. Ad 10 yesterday, OK so while `GADMTOols` looks great, there seems to be some sort of library issue, also I'm getting a projection issue, so I'll instead dowload the .rds file. 
+
+3. So first need to set up the makefile to dowload the file if it doesn't exist. Jesus, this is a mess, I don't actually know how to do this on widnows (`curl` and `wget` aren't working) so maybe I should just download through R - if the file doesn't exist. 
+
+4. OK, so Rscript to download it is good. 
+
+5. Now i need a script to clean it and save the resulting rds for plotting. 
+
+6. First problem is that the 63 provinces in the GADM map are not grouped by region. 
+
+7. I finda  table of provinces and regions on Wikipedia. But there is an encoding problem.. Vietnamese characters.. But I need them Vietnamese in order to match the table with the datatable in the spatialpolygonsdataframe. 
+
+8. Then I also need to fix the hyphen/dash situation to make the match. jesus. Then still have to manually match a few regions -- ToDo figure out how to do approximate matching in R..
+
+9. OK, so now province and region table is added to the spatialpolygon dataframe. And need to fix the makefile.
+
 # Appendix 1 - Background on the Project Folder Organization Design (snapshot 22.11.2017) 
 
 ```{r appendix-1, child = 'j-appendix1.Rmd'}
