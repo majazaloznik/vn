@@ -203,6 +203,32 @@ knitr::include_graphics(here::here("/figures/make.png"))
 
 9. OK, so now province and region table is added to the spatialpolygon dataframe. And need to fix the makefile.
 
+## Wednesday 29.11.2017
+
+1. So, ad 9. yesterday, we have a map data clean file now. The output of which is a processed rds file? And then there should be another map function file, which will deal with plots?
+
+2. OK, so makefile now downloads, and processes map data. 
+
+3. Now need to plot sth ;)
+
+4. Little detour trying to figure out roxygen, neat, but not really useful for this project, alhtough the funciton commenting protocol is. 
+
+5. Wow, OK, this is working now: the data is downloaded, cleaned up, then plotted using a sounrce function script ;). What if I remove the downloaded data? Nice, works ;)
+
+6. Ok, but i should really do stuff like merging provinces, or selecting regions in the data-cleaing code, no? So then the output there is e.g. 4 different `.rds` files. Which I will use a variable list name for inthe makefile, since it will be too unwieldly otherwise. 
+
+7. changed my mind about 6 actually.. selecting subsets will happen if/when needed. So back to only one rds being processed. 
+
+8. OK, so the first plot - of norhtern vn and the provinces .. looks great, but has way too much detail, which is killing the eps. I must have reduced the detail at some point in the previous one, but it isn't documented. I'll do it now..
+
+9. Also, makefile/scripting means I can't use dev2eps.copy, but postscript() instead, this might need some additional figuring out.
+
+10. OK, simplifying the Vietnam map, suing `rgeos::gSimplify` - careful, this removes the dataframe, you need to keep it and add it back. ARGH, but unions have to happen before simplifying... 
+
+11. OMG, OK, found the simplifying tool: `mapshaper::ms_simplify` is what i want! [from here](https://philmikejones.me/post/2016-09-29-simplify-polygons-without-creating-slivers/). So this is great, unfortunately it does sth weird with the data.frame attached to the sp object, in particular has issues with the econding.. 
+
+12. So decided to first remove the df table from the spdf, then simplify, then add it back. ARGH. 
+
 # Appendix 1 - Background on the Project Folder Organization Design (snapshot 22.11.2017) 
 
 ```{r appendix-1, child = 'j-appendix1.Rmd'}
