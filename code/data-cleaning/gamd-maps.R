@@ -46,7 +46,7 @@ sp <- as.SpatialPolygons.PolygonsList(vietnam.adm1@polygons)
 vietnam.adm1.simple <- ms_simplify(sp, keep_shapes = TRUE)
 
 vietnam.adm1.simple.df <- SpatialPolygonsDataFrame(vietnam.adm1.simple, df)
-
+#
 ## save processed data
 ###############################################################################
 saveRDS(vietnam.adm1.simple.df, "data/processed/maps/VNM_adm1.rds")

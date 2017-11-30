@@ -229,6 +229,28 @@ knitr::include_graphics(here::here("/figures/make.png"))
 
 12. So decided to first remove the df table from the spdf, then simplify, then add it back. ARGH. 
 
+## Thursday 30.11.2017 
+
+1. But now there is anohter problem the eps form the makefile isn't the same as the one I run direct from R. This must have sth to do with the Vietnamese characters, I'm selecting the subset of 4 provinces by name, and they are presumably empty when run via Rscript.
+
+2. OK, I can't be bothered figuring this out, I will instead just refer to the provinces by code/ID. Got it.
+
+3. OK, now there is the issue of labels. Right now this had a psfrag labelling system, alhtough I can see up ahead that it doesnt' work. SO I'll do a system where they are called `-labs.eps` and `-psf.eps`, so produce two figure files. And they can be referred to as a variable in the makefile, to reduce clutter. 
+
+4. OK, there was a bit of trouble here, but got them to work - the location of where you declare the variable as a file list apparently matters..
+
+5. Now still have the issue of the fact that maps gets run every time, regardless of any changes, and the 50 or so errors that get produced, I guess because of the bloody VN letters in the labels.. 
+
+6. Hmm, ok, sth to do with eps!? I need to do a minimal example to figure out wtf..
+
+7. And not sure about the labels, what is causing it. OK, yeah, it's the NAME_1 labels, changed them to VARNAME_1.
+
+8. There's another issue though, e.g. now the 01-maps.R script has code for two plots, and so there are two targets in the $(mak-north01) variable, so that means it gets run twice. But that's not what I want is it. I want it to run once. OK, wow, solved with th **pattern rule** from this amazing [SO answer](https://stackoverflow.com/a/3077254/801398).  
+
+9. This looks like a good setup for multiple output formats. Although the whole knitr/rmarkdown/render dsitinciton.. I need to work on that a bit. 
+
+
+
 # Appendix 1 - Background on the Project Folder Organization Design (snapshot 22.11.2017) 
 
 ```{r appendix-1, child = 'j-appendix1.Rmd'}
