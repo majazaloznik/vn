@@ -3,7 +3,6 @@
 ###############################################################################
 ## preliminaries
 ###############################################################################
-rm(list = ls())
 library(maptools)
 source("code/functions/fun-maps.R")
 .parold <- par(no.readonly = TRUE)
@@ -25,7 +24,8 @@ join.north <- unionSpatialPolygons(north, rep(1, length(north)))
 
 ## 1. Plot North Vientam VHLSS and VAHS regions
 ###############################################################################
-postscript("figures/map-north01-psf.eps", horizontal = FALSE, onefile = FALSE, paper = "special",
+postscript(paste0(out, "/map-north01-psf.eps"), 
+           horizontal = FALSE, onefile = FALSE, paper = "special",
            height = 7, width = 10)
 
 par(mar=c(0.1,0.1,0.1,0.1))
@@ -47,9 +47,9 @@ par(.parold)
 
 ## 1.2 Plot North Vientam VHLSS and VAHS regions - with labels. 
 
-postscript("figures/map-north01-lab.eps", horizontal = FALSE, onefile = FALSE, paper = "special",
+postscript(paste0(out, "/map-north01-lab.eps"), 
+           horizontal = FALSE, onefile = FALSE, paper = "special",
            height = 7, width = 10)
-
 par(mar=c(0.1,0.1,0.1,0.1))
 par(fig=c(0.12,1,0,1), new =F)
 plot(north) # phony plot, for limits only

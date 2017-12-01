@@ -18,7 +18,7 @@ R-M = $(DATA)/raw/maps
 DOCS = $(DIR)/docs
 J = $(DOCS)/journals
 
-FIGS = $(DIR)/figures
+FIG = $(DIR)/figures
 
 # file lists ##################################################################
 # lower case ##
@@ -27,9 +27,9 @@ FIGS = $(DIR)/figures
 # J-MIG = $(J)/j-migration.html $(J)/j-migration.pdf
 # migraiton sources
 # J-MIG-SRC = $(J)/j-migration.Rmd $(J)/j-appendix1.Rmd
-FIG/map-north01.eps =  $(FIG)/map-north01-psf.% $(FIG)/map-north01-lab.%
-
-# commands ####################################################################
+FIG/maps =   $(FIG)/map-north01-psf.eps  $(FIG)/map-north01-lab.eps
+  
+  # commands ####################################################################
 # recipe to knit pdf from first prerequisite
 KNIT-PDF = Rscript -e "require(rmarkdown); render('$<', output_dir = '$(@D)', output_format = 'pdf_document' )"
 
@@ -40,28 +40,28 @@ KNIT-HTML = Rscript -e "require(rmarkdown); render('$<', output_dir = '$(@D)', o
 # DEPENDENCIES   ##############################################################
 ###############################################################################
 all:   $(J)/j-migration.pdf $(J)/j-migration.html  maps dot
-		-rm $(wildcard ./docs/*/tex2pdf*) -fr
+	-rm $(wildcard ./docs/*/tex2pdf*) -fr
 
-dot: $(FIGS)/make.png 
+dot: $(FIG)/make.png 
 
-maps : $(FIG/map-north01.eps)
+maps : $(FIG/maps)
 
 
 # top level dependencies ######################################################
 # make file .dot
 $(P-PW)/make.dot : $(DIR)/Makefile
 	python $(DIR)/code/project-wide/makefile2dot.py < $< > $@
-
+  
 # make chart from .dot
-$(FIGS)/make.png : $(P-PW)/make.dot
+$(FIG)/make.png : $(P-PW)/make.dot
 	Rscript -e "require(DiagrammeR); require(DiagrammeRsvg); require(rsvg); png::writePNG(rsvg(charToRaw(export_svg(grViz('$<')))), '$@')"
 
 # journal (and its appendix) render to  html
-$(J)/j-migration.html: $(J)/j-migration.Rmd $(J)/j-appendix1.Rmd $(FIGS)/make.png
+$(J)/j-migration.html: $(J)/j-migration.Rmd $(J)/j-appendix1.Rmd $(FIG)/make.png
 	$(KNIT-HTML)
 
 # journal (and its appendix) render to  pdf
-$(J)/j-migration.pdf:  $(J)/j-migration.Rmd $(J)/j-appendix1.Rmd $(FIGS)/make.png
+$(J)/j-migration.pdf:  $(J)/j-migration.Rmd $(J)/j-appendix1.Rmd $(FIG)/make.png
 	$(KNIT-PDF)
 
 
@@ -74,6 +74,6 @@ $(P-M)/VNM_adm1.rds :	$(C-DC)/gamd-maps.R $(R-M)/VNM_adm1.rds
 	Rscript -e "source('$<')"
 
 # two map w and w/o labels
-$(FIG/map-north01.eps): $(C-P)/01-maps.R   $(P-M)/VNM_adm1.rds $(C-F)/fun-maps.R
-	Rscript -e "source('$<')"
-	
+$(FIG/maps): $(C-P)/01-maps.R $(P-M)/VNM_adm1.rds $(C-F)/fun-maps.R
+	Rscript -e "out <- '$(@D)'; source('$<')"
+

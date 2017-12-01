@@ -245,12 +245,33 @@ knitr::include_graphics(here::here("/figures/make.png"))
 
 7. And not sure about the labels, what is causing it. OK, yeah, it's the NAME_1 labels, changed them to VARNAME_1.
 
-8. There's another issue though, e.g. now the 01-maps.R script has code for two plots, and so there are two targets in the $(mak-north01) variable, so that means it gets run twice. But that's not what I want is it. I want it to run once. OK, wow, solved with th **pattern rule** from this amazing [SO answer](https://stackoverflow.com/a/3077254/801398).  
+8. There's another issue though, e.g. now the 01-maps.R script has code for two plots, and so there are two targets in the $(map-north01) variable, so that means it gets run twice. But that's not what I want is it. I want it to run once. OK, wow, solved with th **pattern rule** from this amazing [SO answer](https://stackoverflow.com/a/3077254/801398).  
 
 9. This looks like a good setup for multiple output formats. Although the whole knitr/rmarkdown/render dsitinciton.. I need to work on that a bit. 
 
+## Friday 1.12.2017
 
+1. ad 6. - minimal example for eps. OK, I've got a minimal example that is possibly too minimal - as in it works normally as expected.
 
+2. OK, looks like it has to do with the FiGs folder, if I move the eps file to the project folder there is no repeat.. try minimal again. OMFG, OK, I think I've figured it out. kind of anywya, Sth to do with the FIGs folder and variable.. I had misspelled FIG and FIGS, so that was one thing, then also used the forward slash in the variable name for the map.eps list of files, and it didn't like that.. Christ, and that's not even all of it. there is also an issue with the Rplots.pdf, and that only happens iwth the lab file, not the psfrag one. 
+
+* OK, no the slash was not a problem, I'll keep using it. 
+* There is still the Rplots.pdf that I'm not sure what in the plotting opes it, but might have sth to do with this probelm [described here](https://stackoverflow.com/a/6543027/801398)
+* So now it looks like it had sth to do with the % i was using in the list definition. 
+* Which is very annoying because just a few days ago I had to add them in order to stop the code from running twice for two targets.. Turns out that isn't true?
+
+3. Question - how can you pass an argument through Rscript - e.g. a folder to save outputs in? Yes, you just assign the variable before the source. e.g. if the script file says `print(1+x)` then this will produce 12:
+
+```
+test: script.R
+	Rscript -e "x <- 11; source('$<')"
+```
+
+4. So to make the whole system even more mobile, I can as **a rule** assign folders in the makefile, not in the R scripts themselves. So let's fix the `01-maps.R` file, and have it not decide what folders to put the files in. 
+
+5. Lol, that almost didn't work because i had a rm() statement at the beginning of the file, yikes!
+
+6. AND this works with `'$(@D)'` as well, AMAZEBALLS!
 # Appendix 1 - Background on the Project Folder Organization Design (snapshot 22.11.2017) 
 
 ```{r appendix-1, child = 'j-appendix1.Rmd'}
