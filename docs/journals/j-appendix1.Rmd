@@ -5,7 +5,7 @@ date: "22 November 2017"
 output: html_document
 ---
 
-So this was November 2017, I needed to consolidate a pile of Vietnam related folders.. and try to integrate [[Makefile]] into my system. Starting point was based a python thing called [[cookiecutter| https://drivendata.github.io/cookiecutter-data-science/]] data science, and a bunch of other pipeline links below, I reorganized the whole thing.. 
+So this was November 2017, I needed to consolidate a pile of Vietnam related folders.. and try to integrate Makefile into my system. Starting point was based a python thing called [cookiecutter]( https://drivendata.github.io/cookiecutter-data-science/) data science, and a bunch of other pipeline links below, I reorganized the whole thing.. 
 
 My current thinking is that while structure is important, the makefile is the main thing - making the order and dependencies clear..
 
@@ -25,7 +25,7 @@ Which sub-sections are self-standing?
 
 And how do I keep track of/ visualise the dependencies (order). 
 
-IDE agnosticism? Can all the scripts be run with R CMD or Rscript (what's the difference?) [[here's the difference | https://stackoverflow.com/a/22358976/801398]]
+IDE agnosticism? Can all the scripts be run with R CMD or Rscript (what's the difference?) [here's the difference ]( https://stackoverflow.com/a/22358976/801398)
 
 ### Project level stuff
 

@@ -3,8 +3,8 @@ title: "Journal--VN Project Migration and Consolidation"
 author: "mz"
 date: "22 November 2017"
 output:
-  html_document: default
   pdf_document: default
+  html_document: default
 ---
 ## Wednesday 22.11.2017 
 
@@ -223,7 +223,7 @@ knitr::include_graphics(here::here("/figures/make.png"))
 
 9. Also, makefile/scripting means I can't use dev2eps.copy, but postscript() instead, this might need some additional figuring out.
 
-10. OK, simplifying the Vietnam map, suing `rgeos::gSimplify` - careful, this removes the dataframe, you need to keep it and add it back. ARGH, but unions have to happen before simplifying... 
+10. OK, simplifying the Vietnam map, using `rgeos::gSimplify` - careful, this removes the dataframe, you need to keep it and add it back. ARGH, but unions have to happen before simplifying... 
 
 11. OMG, OK, found the simplifying tool: `mapshaper::ms_simplify` is what i want! [from here](https://philmikejones.me/post/2016-09-29-simplify-polygons-without-creating-slivers/). So this is great, unfortunately it does sth weird with the data.frame attached to the sp object, in particular has issues with the econding.. 
 
@@ -272,6 +272,118 @@ test: script.R
 5. Lol, that almost didn't work because i had a rm() statement at the beginning of the file, yikes!
 
 6. AND this works with `'$(@D)'` as well, AMAZEBALLS!
+
+# Tuesday 10.4.2018 
+
+1. OK, so I think i've managed to figure out what I've done so far, and pick it up from there
+
+2. In the mean time I had had a bit more of a look at makefile, and basically not figured out much, except that I still don't know how to do multiple targets, so instead I just use the first one. 
+
+3. So the map part is done, that covers `S01-maps`. 
+
+4. But perhaps I don't want to be doing the whole .eps-tex-dvi-ps-pdf thing if I can instead do Rmd?
+
+5. In which case I also want to be a bit modular at least - with child inputs, not everything in one file. 
+I guess the question is then if the children work as stand alones?
+
+6. Very cool, it seems to actually work: the parent file ignores the YAML (at least the title and author, it's not repeating it, which is great). 
+
+7. Unfortunately the Rnws i'd made won't work. Which isn't a massive problem except when it comes to tables..
+
+8. What about bibliographies, how did that work? Should be OK
+
+9. Manually recoding 02Outline.Rnw to 01_AMB-report_02_Outline.Rmd. 
+
+10. Plot `C:\Users\sfos0247\Dropbox\analysis\Vietnam\VietnamABM\Scripts\old\SoftwareDiagram.R`, but needs nice
+fonts. 
+
+11. Only issue is now references don't work from the child document. But let me first update the makefile. 
+
+12. OK, so moved over the makefile recipes i'd used before. And it seems I need to use touch when just listing dependencies for the dot files sake. So weird, I'll never get a hang of this make stuff..
+
+13. OK, bibliography. Oh, it's fine, it was tabbed in the yaml when it didn't need to be. 
+
+14. How about references and cross references? Apparently bookdown [https://bookdown.org/yihui/bookdown/a-single-document.html](here) is the explanation of how it might be relevant for a single document as well. SO not doing an actual book, but there are `bookdown::pdf_document2` versions that should allow references. Lemme try. 
+
+15. OK, figure labels work `\@ref(fig:label) ` using the chunk name. 
+
+16. Let me see how it works with word. Yess, actually looks great!
+
+17. OK, but I can't figure out tables or rather kables!? wtf? Right, they work -  i just had the format = latex option on, which obviously didn't work with word, but if i remove it it works with either automatically. 
+
+18. Now need to figure out the image? Doesnt' work for word, or pdf!? 
+
+# Wednesday 11.4.2018
+
+1. First make sure I can render to pdf and word: using the bookdown versions of both works: I can knit from Rstudio witht he yaml:
+
+``` r
+output:
+  bookdown::pdf_document2: null
+  bookdown::word_document2: null
+```
+
+2. Now I only need to get that into the makefile. Excellent, simply add `output = all` in the render call.Actually no, that didn't work. Raise SO issue! 
+
+3. Also the rmarkdown::render() output doenst' call the bookdown funcitons -- obviously, i need to call the `bookdown::pdf_document2()` functions presumably? OK, no, looks like the `:null` was the problem - even thouth it appeared automatically! it should be default, like this:
+
+``` r
+output:
+  bookdown::pdf_document2: default
+  bookdown::word_document2: default
+```
+
+4. OK, so this seems to be working now, both doc and pdf files work i.e. have references.
+
+5. Now fix the fact that the pdf file seems to be ignoring the fig.height and width options. OK, this was fixed using `out.width = "400px"`
+
+6. But this is not supported in Word - i mean it's not causing a problem atm, just a warning, but how should one deal with this? With some chunk options working in pdf but not in word? Same thing for kableExtra, says I should specify output format!?
+
+7. OK, this is too much, i'll just do a screenshot of the table and deal with it some other time. 
+
+8. Now the problem is that the caption doesnt' work for the table. At least not in Word.
+
+9. Unless I add it manually?
+
+10. Moving on, turns out Word doesn't automatically number sections, so I have to set up a reference document..
+
+11. Haha, I just found out how to set up multilevel section numbering in Word..[https://blogs.msdn.microsoft.com/timid/2013/08/29/stupid-microsoft-word-trick-multilevel-numbered-headings/](hilarious if it weren't sad). 
+
+12. OK, so numbering and referencing is OK in pdf, but in Word there is the issue that the TOC gets it's own heading title, which then fucks up. So you need to change the style of the TOC heading in the word document to one based on Body - i.e. not Heading. 
+
+13. OK, now starting on `03_Analysis.Rmd`.
+
+14. OMG, what just happened just now!? everything was working OK knitting from Rstudio and then failed on make. and then bit by bit went back to find that it was probably an issue with `coordinates` which was being masked between `sp` and `diagram` . But i don't know why make would be an issue. But adding `sp::` and `diagram::` has now fixed it (after an hour or so). 
+
+15. OK, next thing is the IPUMS age box plots. That was all done originaly in `Scripts/IPUMS/01IPUMSimport.R` but obviously needs to be an import and a plotting script. 
+
+
+# Thursday 12.4.2018
+
+1. Split `Scripts/IPUMS/01IPUMSimport.R` into an import script and a plotting script. 
+
+2. The data import is now `C:\Users\sfos0247\Dropbox\analysis\vn\code\data-cleaning\01_IPUMS_import.R`, the output of which is an `.RData` file that I'll keep in processed data.
+
+3. In the import file noticed that some people have missing ages coded as 999, which hadn't been removed earlier, but have been now. 
+
+4. OOps, yesterday I got the map to work in 03_analysis, but never updated the makefile. So in order to plot the map in the chunk i need the `VNM_adm1.rds` data and source the `fun-maps.R` functions. If they get updated, touch 03_Analysis. 
+
+5. OK, so the IPUMS now. Oh, actually `Scripts/IPUMS/01IPUMSimport.R` was not the clean version, `S05-IPUMS-import` is the clean version!!
+
+6. So, clean up the import and clean even more, so that the heads.Rdata file is tiny. OK.
+
+7. Now I'll turn the boxplot funcitons into a function only script, and then call both from the analysis rmd in a chunk. 
+
+8. Mah, it's OK, the legend isn't perfectly legible in the Word file, but whatever. 
+
+9. OK, make whole report - something odd with the `00_gamd-maps` file? but running it manually was ok. Won't look at it now, but the error was object length mismatch for the spatialpolygonsdataframe call saying it had 65 polygon objects, but df had 66 rows. Maybe that's because of the simplification? it looses a whole row?
+
+10. OK, next we have retirement table. This was clearly based on additional data cleaning, so I add that part to the IPUMS import file. Also here remove people aged 999. And save them in a different processed data file: 
+
+11. OK, so so close with the table, there is even a fucntion called `kable_to_image()` for word, but gives me an error about not having ghostscript installed, which isn't true. so back to screenshots of tables for now..
+
+
+
 # Appendix 1 - Background on the Project Folder Organization Design (snapshot 22.11.2017) 
 
 ```{r appendix-1, child = 'j-appendix1.Rmd'}

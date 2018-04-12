@@ -4,12 +4,12 @@
 ## preliminaries
 ###############################################################################
 library(maptools)
-source("code/functions/fun-maps.R")
+source(here::here("code","functions","fun-maps.R"))
 .parold <- par(no.readonly = TRUE)
 
 ## import data ################################################################
 ###############################################################################
-vietnam.adm1 <-   readRDS("data/processed/maps/VNM_adm1.rds")
+vietnam.adm1 <-   readRDS(here::here("data","processed","maps","VNM_adm1.rds"))
 
 ## subset data
 ###############################################################################
@@ -66,3 +66,4 @@ plot(join.north, add=TRUE)
 polygon(x=c(102,108,108,102), y =c(20,20,24,24))
 dev.off()
 par(.parold)
+

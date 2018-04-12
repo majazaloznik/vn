@@ -3,7 +3,6 @@
 ###############################################################################
 ## preliminaries
 ###############################################################################
-rm(list = ls())
 library(maptools)
 library(rmapshaper)
 library(dplyr)
@@ -15,7 +14,7 @@ source("code/functions/fun-maps.R")
 # import map
 ###############################################################################
 # load spatioaloygonsdataframe of all provinces - the map files are 
-# downloaded by the makefile. 
+# downloaded by the makefile from http://biogeo.ucdavis.edu/data/gadm2.8/rds/VNM_adm1.rds
 vietnam.adm1 <- readRDS("data/raw/maps/VNM_adm1.rds")
 
 
@@ -50,3 +49,4 @@ vietnam.adm1.simple.df <- SpatialPolygonsDataFrame(vietnam.adm1.simple, df)
 ## save processed data
 ###############################################################################
 saveRDS(vietnam.adm1.simple.df, "data/processed/maps/VNM_adm1.rds")
+
