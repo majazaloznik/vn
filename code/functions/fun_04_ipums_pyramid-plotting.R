@@ -1,11 +1,16 @@
-#######################################
+#####==========================================================================
 ## gets sourced from 01-DataAnalysis.Rnw  ##
 #######################################
 # FunMakeTransparent
 # FunPyramidPlot
 # FunPyramidPlotNoAxes
+# FunEduPyramid
+# FunEduPyramidProp
+# FunLitPyramid 
+# FunLitPyramidProp
 
 
+#####==========================================================================
 FunMakeTransparent <- function(some.colour, alpha=100){
   new.colour <- col2rgb(some.colour)
   apply(new.colour, 2, function(cur.col.data) {rgb(red=cur.col.data[1], 
@@ -139,7 +144,7 @@ FunPyramidPlot <- function (lx, rx, labels = NA, top.labels = c("Male", "Age",
 }
 
 
-
+#####==========================================================================
 FunPyramidPlotNoAxes <- function (lx, rx, labels = NA, top.labels = c("Male", "Age", 
                                                                       "Female"), main = "", laxlab = NULL, raxlab = NULL, unit = "%", 
                                   lxcol, rxcol, gap = 1, space = 0.2, ppmar = c(4, 2, 4, 2), 
@@ -266,3 +271,80 @@ FunPyramidPlotNoAxes <- function (lx, rx, labels = NA, top.labels = c("Male", "A
   return(oldmar)
 }
 
+
+#####==========================================================================
+FunEduPyramid <- function(y=1989){
+    lx <- as.matrix(left_join(arrange(expand.grid(age.g=levels(pyramid.age.edu.$age.g)), age.g),
+                              filter(pyramid.age.edu., year==y, sex==1))[,4:7])
+    rx <-as.matrix(left_join(arrange(expand.grid(age.g=levels(pyramid.age.edu.$age.g)), age.g),
+                           filter(pyramid.age.edu., year==y, sex==2))[,4:7])
+    lx[is.na(lx)] <- 0
+    rx[is.na(rx)] <- 0
+    FunPyramidPlotNoAxes(lx, rx,
+                laxlab=c(0, 1000000), raxlab=c(0, 500000), unit="", gap=0,
+                xlim=c(max(apply(pyramid.age.edu.[,4:7], 1, function(x) sum(x,na.rm=TRUE))),
+                       800000),
+                #lxcol= c(cN, cP, cS, cT), rxcol= c(cN, cP, cS, cT),
+                lxcol=rep(c1,4), rxcol=rep(c1,4),
+                density=c(20,40,60,80),
+                border="gray50",
+                labels=as.character(levels(pyramid.age.edu.$age.g)), lwd=1 ,
+                top.labels = c("", "",
+                               ""),
+                ppmar = c(3, 4, 1, 3))
+}
+
+#####==========================================================================
+FunEduPyramidProp <- function(y=1989){
+  lx <- as.matrix(left_join(arrange(expand.grid(age.g=levels(pyramid.age.edu.prop$age.g)), age.g),
+                            filter(pyramid.age.edu.prop, year==y, sex==1))[,4:7])
+  rx <-as.matrix(left_join(arrange(expand.grid(age.g=levels(pyramid.age.edu.prop$age.g)), age.g),
+                           filter(pyramid.age.edu.prop, year==y, sex==2))[,4:7])
+  lx[is.na(lx)] <- 0
+  rx[is.na(rx)] <- 0
+  FunPyramidPlotNoAxes(lx, rx, unit="", gap=0,
+               lxcol=rep(c1,4), rxcol=rep(c1,4),
+               density=c(20,40,60,80),
+               border="gray50", lwd=1,
+               top.labels = c("", "",
+                              ""),
+               ppmar = c(3, 2, 1, 3), xlim = c(1,1))
+}
+
+#####==========================================================================
+
+FunLitPyramid <- function(y=1989){
+  lx <- as.matrix(left_join(arrange(expand.grid(age.g=levels(pyramid.age.lit$age.g)), age.g),
+                            filter(pyramid.age.lit, year==y, sex==1))[,4:5])
+  rx <-as.matrix(left_join(arrange(expand.grid(age.g=levels(pyramid.age.lit$age.g)), age.g),
+                           filter(pyramid.age.lit, year==y, sex==2))[,4:5])
+  lx[is.na(lx)] <- 0
+  rx[is.na(rx)] <- 0
+  FunPyramidPlotNoAxes(lx, rx,
+               laxlab=c(0, 1000000),
+               raxlab=c(0, 500000),
+               unit="", gap=0,
+               xlim=c(max(apply(pyramid.age.edu.[,4:7], 1, function(x) sum(x,na.rm=TRUE))),
+                      800000),
+               lxcol= c(cNL, cL), rxcol= c( cNL, cL),
+               labels=as.character(levels(pyramid.age.lit$age.g)),
+               top.labels = c("", "",
+                              ""),
+               ppmar = c(3, 4, 1, 3), lwd=1)
+
+}
+
+FunLitPyramidProp <- function(y=1989){
+  lx <- as.matrix(left_join(arrange(expand.grid(age.g=levels(pyramid.age.lit.prop$age.g)), age.g),
+                            filter(pyramid.age.lit.prop, year==y, sex==1))[,4:5])
+
+  rx <-as.matrix(left_join(arrange(expand.grid(age.g=levels(pyramid.age.lit.prop$age.g)), age.g),
+                           filter(pyramid.age.lit.prop, year==y, sex==2))[,4:5])
+  lx[is.na(lx)] <- 0
+  rx[is.na(rx)] <- 0
+  FunPyramidPlotNoAxes(lx, rx, unit="", gap=0,
+               lxcol= c(cNL, cL), rxcol= c( cNL, cL), lwd=1,
+                              top.labels = c("", "",
+                                              ""),
+                              ppmar = c(3, 2, 1, 3))
+}

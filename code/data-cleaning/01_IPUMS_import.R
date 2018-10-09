@@ -105,13 +105,6 @@ agri.heads.G.ww <- agri.heads %>%
   dplyr::summarize(n=sum(wtper)/100, mean.age=weighted.mean(age, wtper)) %>%
   ungroup()
 
-## save these so i don't need to import them every time:
-save(file="data/processed/ipums/heads.RData", all.heads.G.ww, 
-     agri.heads.G.ww, 
-     agri.box.stats, 
-     all.head.box.stats, 
-     all.G.ww )
-
 
 
 ###############################################################################
@@ -165,7 +158,7 @@ retirement.table <- rbind(retirement, retirement.all.employed)
 retirement.table <- cbind(categ = c("Heads of HH in agriculture","Heads of HH in agriculture",
                                     "All employed", "All employed"),
                           retirement.table)
-saveRDS(retirement.table, "data/processed/ipums/retirement.rds")
+
 
 ###############################################################################
 ## 5. Eductation distribution plot
@@ -187,7 +180,63 @@ FunEduSum <- function(df){
 agri.heads.edu.G.ww <- FunEduSum(agri.heads)
 all.heads.edu.G.ww <- FunEduSum(all.heads)
 
-# save 
-saveRDS(agri.heads.edu.G.ww, "data/processed/ipums/agri.education.rds")
-saveRDS(all.heads.edu.G.ww, "data/processed/ipums/all.education.rds")
+
+
+###############################################################################
+# 6. Pyramid plots with education and literacy
+###############################################################################
+
+# relevel educational attainment into correct factor order
+agri.heads$edattan <- relevel(agri.heads$edattan, "1")
+agri.heads$edattan <- factor(agri.heads$edattan, labels=c("none", "prim", "sec", "tert", "unk", "not"))
+agri.heads$sex <- relevel(agri.heads$sex, "1")
+pyramid.age.edu. <- agri.heads %>%
+  mutate(age.g = cut(age, breaks=seq(0,100,5)))%>%
+  group_by(year, sex, edattan, age.g) %>%
+  dplyr::summarize(n=sum(wtper)/100) %>%
+  spread(edattan, n) %>%
+  select(-c(8:9))
+
+pyramid.age.edu.prop <- pyramid.age.edu. %>%
+  gather(edu, n, -year, -sex, -age.g) %>%
+  arrange(year, sex, age.g) %>%
+  group_by(year, sex, age.g) %>%
+  mutate(p=n/sum(n, na.rm=TRUE)) %>%
+  select(-n) %>%
+  spread(edu,p)
+
+# literacy as well
+agri.heads$lit <- relevel(agri.heads$lit, "1")
+
+pyramid.age.lit <- agri.heads %>%
+  mutate(age.g = cut(age, breaks=seq(0,100,5)))%>%
+  group_by(year, sex, lit, age.g) %>%
+  dplyr::summarize(n=sum(wtper)/100) %>%
+  spread(lit, n) %>%
+  select(-c(6))
+
+### population pyramid but with proporitons instead
+pyramid.age.lit.prop <- pyramid.age.lit %>%
+  gather(lit, n, -year, -sex, -age.g) %>%
+  arrange(year, sex, age.g) %>%
+  group_by(year, sex, age.g) %>%
+  mutate(p=n/sum(n, na.rm=TRUE)) %>%
+  select(-n) %>%
+  spread(lit,p)
+
+
+## save these so i don't need to import them every time:
+save(file=here::here("data","processed", "ipums","01_ipums-summaries.RData"), all.heads.G.ww, 
+     agri.heads.G.ww, 
+     agri.box.stats, 
+     all.head.box.stats, 
+     all.G.ww,
+     retirement.table,
+     agri.heads.edu.G.ww,
+     all.heads.edu.G.ww,
+     pyramid.age.edu.,
+     pyramid.age.edu.prop,
+     pyramid.age.lit,
+     pyramid.age.lit.prop)
+
 

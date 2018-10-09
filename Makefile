@@ -72,7 +72,7 @@ endef
 
 # DEPENDENCIES   ##############################################################
 ###############################################################################
-all:  journal  maps dot
+all:  journal  report
 
 
 ## Journal ====================================================================
@@ -117,18 +117,17 @@ $(R)/01_ABM-report_02_Outline.Rmd: $(C-P)/02_plot-software-diagram.R
 	touch $(R)/01_ABM-report_02_Outline.Rmd
 
 # dependencies: map data, IPUMS data and age boxplot functions, retiremen table,
-$(R)/01_ABM-report_03_Analysis.Rmd: $(P-M)/VNM_adm1.rds $(C-F)/fun-maps.R  $(C-F)/fun_03_ipums_age-boxplots.R $(P-I)/heads.RData $(P-I)/retirement.rds
+# educaiton pyramid functions
+$(R)/01_ABM-report_03_Analysis.Rmd: $(P-M)/VNM_adm1.rds $(C-F)/fun-maps.R  \
+$(C-F)/fun_03_ipums_age-boxplots.R $(P-I)/01_ipums-summaries.RData \
+$(C-F)/fun_04_ipums_pyramid-plotting.R
 	touch $(R)/01_ABM-report_03_Analysis.Rmd
 
 
 ## IPUMS data analysis and plots =============================================#
 # import IPUMS data and get agricultural heads summaries
-$(P-I)/heads.RData: $(C-DC)/01_IPUMS_import.R
+$(P-I)/01_ipums-summaries.RData: $(C-DC)/01_IPUMS_import.R
 	Rscript -e "source('$<')"
-	
-# dependency - multiple outputs
-$(P-I)/retirement.rds: $(C-DC)/01_IPUMS_import.R
-
 	
 maps: $(FIG/maps)
 ## VIETNAM MAPS ==============================================================#

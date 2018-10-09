@@ -382,6 +382,31 @@ output:
 
 11. OK, so so close with the table, there is even a fucntion called `kable_to_image()` for word, but gives me an error about not having ghostscript installed, which isn't true. so back to screenshots of tables for now..
 
+12. Next is the education bit, OK, the ladies educational attainment for agri is don
+
+# Friday 13.4.2018
+
+1. Added page numbers
+
+2. OK, now education Pyramids in S05-IPUMS-import. Part of the code goes into the data import/clean file, for the outputs to be saved. 
+
+3. Functions for pyramid plots are in new file `fun_04_ipums_pyramid-plotting.R`. 
+
+4. Works, now fix makefile. How do i do a newline in the makefile? backslash. 
+
+5. Hmm, can't control figure sizes, try updating pandoc. Also need to fix psfrag labels. 
+
+6. But back to makefile, these .rds files are unwieldly.. should I go back to RData? OK, now all outputs are saved in one .RData file. 
+
+7. Very odd, the figure sizes work ok as fig.height and fig.width, i wonder why i ever did anything different. 
+
+8. OK, now literacy plots as well. And don't forget the psfrags labels. 
+
+9. And what's up with the top/bottom bins, why are they different between the two sets of plots? Hmm, looks like the pyramid plot skips the whole bar iff the first value is NA. Could I replace all the NAs with 0? Yes, works!
+
+
+10. Fixed the labels and the odd bins and now one of the pyramids suddenly had xlim 2:2. Just one of them. No idea why. added a new xlim into the funciton, now it's OK. 
+
 
 
 # Appendix 1 - Background on the Project Folder Organization Design (snapshot 22.11.2017) 
